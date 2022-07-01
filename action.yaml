@@ -12,6 +12,12 @@ inputs:
   cache-key-suffix:
     description: Optional cache key suffix.
     default:
+  node-modules-path:
+    description: xxx
+    default: '**/node_modules'
+  package-lock-path:
+    description: xxx
+    default: '**/package-lock.json'
 
 outputs:
   cache-hit:
@@ -38,5 +44,5 @@ runs:
       uses: actions/cache@v3
       with:
         path: |
-          **/node_modules
-        key: ${{ runner.os }}-nodemodules${{ inputs.cache-key-suffix }}-${{ steps.version-info.outputs.node-npm }}-${{ hashFiles('**/package-lock.json') }}
+          ${{ inputs.node-modules-path }}
+        key: ${{ runner.os }}-nodemodules${{ inputs.cache-key-suffix }}-${{ steps.version-info.outputs.node-npm }}-${{ hashFiles('${{ inputs.package-lock-path }}') }}
