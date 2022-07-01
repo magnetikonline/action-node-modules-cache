@@ -1,6 +1,6 @@
 name: Golang with cache
 author: Peter Mescalchin
-description: Setup requested Node.js version with managed node_modules directory caching.
+description: Setup requested Node.js version with managed node_modules caching.
 
 inputs:
   node-version:
@@ -21,13 +21,17 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
         node-version-file: ${{ inputs.node-version-file }}
-
-    # - name: Setup Golang caches
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: |
-    #       ${{ steps.golang-path.outputs.build }}
-    #       ${{ steps.golang-path.outputs.module }}
-    #     key: ${{ runner.os }}-golang${{ inputs.cache-key-suffix }}-${{ hashFiles('**/go.sum') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-golang${{ inputs.cache-key-suffix }}-
+    - name: Fetch version info
+      id: version-info
+      run: |
+        versionNode=$(node --version)
+        versionNpm=$(npm --version)
+        echo "::set-output name=node-npm::${versionNode#v}-${versionNpm#v}"
+      shell: bash
+    - name: Setup Node.js node_modules cache
+      id: cache-nodemodules
+      uses: actions/cache@v3
+      with:
+        path: |
+          **/node_modules
+        key: ${{ runner.os }}-nodemodules${{ inputs.cache-key-suffix }}-${{ steps.version-info.outputs.node-npm }}-${{ hashFiles('**/package-lock.json') }}
