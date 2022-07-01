@@ -13,6 +13,11 @@ inputs:
     description: Optional cache key suffix.
     default:
 
+outputs:
+  cache-hit:
+    description: A boolean value to indicate if a node_modules cache fetch was made.
+    value: "${{ steps.cache-nodemodules.outputs.cache-hit }}"
+
 runs:
   using: composite
   steps:
@@ -35,7 +40,3 @@ runs:
         path: |
           **/node_modules
         key: ${{ runner.os }}-nodemodules${{ inputs.cache-key-suffix }}-${{ steps.version-info.outputs.node-npm }}-${{ hashFiles('**/package-lock.json') }}
-    - name: WIP used cache?
-      run: |
-        echo "${{ steps.cache-nodemodules.outputs.cache-hit }}"
-      shell: bash
