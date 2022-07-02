@@ -45,4 +45,4 @@ runs:
       with:
         path: |
           ${{ inputs.node-modules-path }}
-        key: ${{ runner.os }}-nodemodules${{ inputs.cache-key-suffix }}-${{ steps.version-info.outputs.node-npm }}-${{ hashFiles('${{ inputs.package-lock-path }}') }}
+        key: ${{ runner.os }}-nodemodules${{ inputs.cache-key-suffix }}-${{ steps.version-info.outputs.node-npm }}-${{ hashFiles(inputs.package-lock-path) }}
