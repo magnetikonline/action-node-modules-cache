@@ -18,6 +18,9 @@ inputs:
   package-lock-path:
     description: xxx
     default: '**/package-lock.json'
+  additional-cache-path:
+    description: xxx
+    default:
 
 outputs:
   cache-hit:
@@ -45,4 +48,5 @@ runs:
       with:
         path: |
           ${{ inputs.node-modules-path }}
+          ${{ inputs.additional-cache-path }}
         key: ${{ runner.os }}-nodemodules${{ inputs.cache-key-suffix }}-${{ steps.version-info.outputs.node-npm }}-${{ hashFiles(inputs.package-lock-path) }}
