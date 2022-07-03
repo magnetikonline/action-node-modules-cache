@@ -1,4 +1,4 @@
-name: Golang with cache
+name: Node.js with node_modules cache
 author: Peter Mescalchin
 description: Setup requested Node.js version with managed node_modules caching.
 
@@ -13,13 +13,13 @@ inputs:
     description: Optional cache key suffix.
     default:
   node-modules-path:
-    description: xxx
+    description: Path spec to node_modules directory(s) for caching.
     default: '**/node_modules'
   package-lock-path:
-    description: xxx
+    description: Path spec to package-lock.json file(s) for generated caching key hash.
     default: '**/package-lock.json'
   additional-cache-path:
-    description: xxx
+    description: Optional additional path(s) to be included within the node_modules cache artifact.
     default:
 
 outputs:
