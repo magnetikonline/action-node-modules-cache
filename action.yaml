@@ -1,0 +1,56 @@
+name: Node.js with node_modules cache
+author: Peter Mescalchin
+description: Setup requested Node.js version with managed node_modules caching.
+
+inputs:
+  node-version:
+    description: Desired Node.js version.
+    default:
+  node-version-file:
+    description: Read desired Node.js version from file. Use in place of `node-version` input.
+    default:
+  node-modules-path:
+    description: Path to node_modules directory(s) for caching.
+    default: node_modules
+  additional-cache-path:
+    description: Optional path(s) to be included alongside the node_modules cache artifact.
+    default:
+  package-lock-path:
+    description: Path to package-lock.json file(s) for caching key hash.
+    default: package-lock.json
+  cache-key-suffix:
+    description: Optional cache key suffix.
+    default:
+
+outputs:
+  cache-hit:
+    description: Boolean value to indicate a successful node_modules cache hit.
+    value: ${{ steps.cache-nodemodules.outputs.cache-hit }}
+  cache-key:
+    description: Cache key holding node_modules resources.
+    value: ${{ steps.cache-key.outputs.hashed }}
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+        node-version-file: ${{ inputs.node-version-file }}
+    - name: Construct cache key
+      id: cache-key
+      run: |
+        versionNode=$(node --version)
+        versionNpm=$(npm --version)
+        cacheKeyRoot="${{ runner.os }}-nodemodules${{ inputs.cache-key-suffix && format('-{0}',inputs.cache-key-suffix) }}-${versionNode#v}-$versionNpm-"
+        echo "hashed=${cacheKeyRoot}${{ hashFiles(inputs.package-lock-path) }}" >>"$GITHUB_OUTPUT"
+      shell: bash
+    - name: Setup node_modules cache
+      id: cache-nodemodules
+      uses: actions/cache@v3
+      with:
+        path: |
+          ${{ inputs.node-modules-path }}
+          ${{ inputs.additional-cache-path }}
+        key: ${{ steps.cache-key.outputs.hashed }}
