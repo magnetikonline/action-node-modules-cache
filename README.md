@@ -23,7 +23,7 @@ Cache `node_modules` at the root of a repository, using `/package-lock.json` as 
 steps:
   - name: Setup Node.js with node_modules cache
     id: node-with-cache
-    uses: magnetikonline/action-node-modules-cache@v1
+    uses: magnetikonline/action-node-modules-cache@v2
     with:
       node-version: 18.x
   - name: Install npm packages
@@ -37,7 +37,7 @@ Determine requested Node.js version from file (e.g. `.nvmrc`) using `node-versio
 steps:
   - name: Setup Node.js with node_modules cache
     id: node-with-cache
-    uses: magnetikonline/action-node-modules-cache@v1
+    uses: magnetikonline/action-node-modules-cache@v2
     with:
       node-version-file: .nvmrc
   - name: Install npm packages
@@ -51,7 +51,7 @@ Set alternative paths to cache (`node-modules-path`) and compute hash key from f
 steps:
   - name: Setup Node.js with node_modules cache
     id: node-with-cache
-    uses: magnetikonline/action-node-modules-cache@v1
+    uses: magnetikonline/action-node-modules-cache@v2
     with:
       node-version-file: .nvmrc
       node-modules-path: path/to/node_modules
@@ -67,7 +67,7 @@ Cache additional paths(s) alongside `node_modules`) - handy for modules such as 
 steps:
   - name: Setup Node.js with node_modules cache
     id: node-with-cache
-    uses: magnetikonline/action-node-modules-cache@v1
+    uses: magnetikonline/action-node-modules-cache@v2
     with:
       node-version-file: .nvmrc
       additional-cache-path: |
@@ -84,7 +84,7 @@ An optional `cache-key-suffix` input allows control of the generated cache key. 
 ```yaml
 steps:
   - name: Cache key suffix
-    uses: magnetikonline/action-node-modules-cache@v1
+    uses: magnetikonline/action-node-modules-cache@v2
     with:
       node-version-file: .nvmrc
       cache-key-suffix: apples
@@ -101,7 +101,7 @@ Outputs of `cache-hit` and `cache-key` are provided - the latter can be used to 
 steps:
   - name: Setup Node.js with node_modules cache
     id: node-with-cache
-    uses: magnetikonline/action-node-modules-cache@v1
+    uses: magnetikonline/action-node-modules-cache@v2
     with:
       node-version-file: .nvmrc
 
@@ -109,7 +109,7 @@ steps:
 
   - name: Save node_modules cache
     if: always()
-    uses: actions/cache/save@v3
+    uses: actions/cache/save@v4
     with:
       path: |
         node_modules
