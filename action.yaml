@@ -43,7 +43,7 @@ runs:
       run: |
         versionNode=$(node --version)
         versionNpm=$(npm --version)
-        cacheKeyRoot="${{ runner.os }}-nodemodules${{ inputs.cache-key-suffix && format('-{0}',inputs.cache-key-suffix) }}-${versionNode#v}-$versionNpm-"
+        cacheKeyRoot="nodemodules-${{ runner.os }}${{ inputs.cache-key-suffix && format('-{0}',inputs.cache-key-suffix) }}-${versionNode#v}-$versionNpm-"
         echo "hashed=${cacheKeyRoot}${{ hashFiles(inputs.package-lock-path) }}" >>"$GITHUB_OUTPUT"
       shell: bash
     - name: Setup node_modules cache
